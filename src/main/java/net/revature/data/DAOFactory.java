@@ -9,35 +9,36 @@ package net.revature.data;
 	    private static StatusDAO statusDAO = null;
 	    private static EventTypeDAO eventtypeDAO = null;
 	    private static DepartmentDAO departmentDAO = null;
+		
 		public static RequestDAO getRequestDAO() {
-			return requestDAO;
+			if(requestDAO==null) {
+			requestDAO = new RequestDAOImpl();
 		}
-		public static void setRequestDAO(RequestDAO requestDAO) {
-			DAOFactory.requestDAO = requestDAO;
-		}
+		return requestDAO;
+	}
 		public static EmployeeDAO getEmployeeDAO() {
+			if(employeeDAO==null) {
+				employeeDAO = new EmployeeDAOImpl();
+			}
 			return employeeDAO;
 		}
-		public static void setEmployeeDAO(EmployeeDAO employeeDAO) {
-			DAOFactory.employeeDAO = employeeDAO;
-		}
 		public static StatusDAO getStatusDAO() {
+			if(statusDAO==null) {
+				statusDAO = new StatusDAOImpl();
+			}
 			return statusDAO;
 		}
-		public static void setStatusDAO(StatusDAO statusDAO) {
-			DAOFactory.statusDAO = statusDAO;
-		}
-		public static EventTypeDAO getEventtypeDAO() {
+		public static EventTypeDAO getEventTypeDAO() {
+			if(eventtypeDAO==null) {
+				eventtypeDAO = new EventTypeDAOImpl();
+			}
 			return eventtypeDAO;
 		}
-		public static void setEventtypeDAO(EventTypeDAO eventtypeDAO) {
-			DAOFactory.eventtypeDAO = eventtypeDAO;
-		}
 		public static DepartmentDAO getDepartmentDAO() {
+			if(departmentDAO==null) {
+				departmentDAO = new DepartmentDAOImpl();
+			}
 			return departmentDAO;
-		}
-		public static void setDepartmentDAO(DepartmentDAO departmentDAO) {
-			DAOFactory.departmentDAO = departmentDAO;
 		}
 	}
 	    // make our constructor private, so it can't be accessed publicly

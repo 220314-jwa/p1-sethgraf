@@ -6,11 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.LinkedList;
-
-
-
-import net.revature.models.Employee;
 import net.revature.models.Status;
 import net.revature.services.ConnectionFactory;
 

@@ -14,6 +14,78 @@ import java.util.Date;
 public class RequestDAOImpl implements RequestDAO {
 	Connection connection;
 	
+	@Override
+	public int create(Request newObj) {
+		Connection connection = ConnectionFactory.getConnection();
+		
+		 String sql = "insert into request (request_id, submitter_id,event_type_id, status_id, event_date, cost, description,location, submitted_at, grade) values(default, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		 
+		 try {
+		       PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+	            // set the fields:
+		       preparedStatement.setInt(1, newObj.getRequest_id());
+		        preparedStatement.setInt(2, newObj.getSubmitter_id());
+		        preparedStatement.setInt(3, newObj.getEvent_type_id());
+		        preparedStatement.setInt(4, newObj.getStatus_id());
+		        preparedStatement.setDate(5, new java.sql.Date(newObj.getEvent_date().getTime()));
+		        preparedStatement.setInt(6, newObj.getCost());
+		        preparedStatement.setString(7, newObj.getDescription());
+		        preparedStatement.setString(8, newObj.getLocation());
+		        preparedStatement.setDate(9, new java.sql.Date(newObj.getSubmitted_at().getTime()));
+		    	preparedStatement.setString(10, newObj.getGrade());
+	        
+	       int count = preparedStatement.executeUpdate();
+	       
+	       ResultSet resultSet = preparedStatement.getGeneratedKeys();
+	       
+	       if (count>0) {
+	    	   System.out.println("Request Completed.");
+	    	   
+	    	   resultSet.next();
+	    	   
+	    	   int id = resultSet.getInt(1);
+	    	   newObj.setRequest_id(id);
+	    	   connection.commit(); //commit the changes to the database
+	       }
+	       else {
+	    	   System.out.println("Request Failed.");
+	    	   connection.rollback(); //rollback the changes
+	       }
+		 } catch (SQLException e) {
+			 //prints out what went wrong
+			 e.printStackTrace();
+			 try {
+				 connection.rollback();
+			 } catch (SQLException e1) {
+				 e1.printStackTrace();
+			 }
+		 } finally {
+			 try {
+				 connection.close();
+			 } catch (SQLException e) {
+				 e.printStackTrace();
+			 }
+		 }
+		 return newObj.getRequest_id();
+	}
+	
+	public void genericCreate(String name) {
+		final String SQL = "insert into generic_table Values(default, ? )";
+		 try(
+				 Connection connection = ConnectionFactory.getConnection();
+				 PreparedStatement statement = connection.prepareStatement(SQL)) 
+		 {
+			 statement.setString(1, name);
+
+			 statement.execute();
+			 
+		 } catch (SQLException e) {
+			 //prints out what went wrong
+			 e.printStackTrace();
+		
+	}
+	}
+	
 	public RequestDAOImpl() {
 		connection = ConnectionFactory.getConnection();
 	}
@@ -64,7 +136,7 @@ public class RequestDAOImpl implements RequestDAO {
 		// TODO Auto-generated method stub
 		Connection connection = ConnectionFactory.getConnection();
 		String sql ="update request set name = ?, request_id = ?, submitter_id = ?, event_type_id = ?, status_id = ?, event_date = ?,"
-				+ "cost = ?, description = ?, location = ?, submitted_at = ?";
+				+ "cost = ?, description = ?, location = ?, submitted_at = ?, grade = ?";
 			try {
 				PreparedStatement preparedStatement = connection.prepareStatement(sql);
 				preparedStatement.setInt(1, updatedObj.getRequest_id());
@@ -76,6 +148,7 @@ public class RequestDAOImpl implements RequestDAO {
 				preparedStatement.setString(7, updatedObj.getDescription());
 				preparedStatement.setString(8, updatedObj.getLocation());
 				preparedStatement.setTimestamp(9, new Timestamp(updatedObj.getSubmitted_at().getTime()));
+				preparedStatement.setString(11, updatedObj.getGrade());
 				
 				int status_id = (updatedObj.getDescription() == "Available") ? 1 : 2;
 				
@@ -151,77 +224,6 @@ public class RequestDAOImpl implements RequestDAO {
 			    	e.printStackTrace();
 			    }
 		return request;
-	}
-
-
-	@Override
-	public int create(Request newObj) {
-		 String sql = "insert into request (request_id, submitter_id,event_type_id, status_id, event_date, "
-		 		+ "cost, description,location, submitted_at)";
-		 
-		 try {
-		       PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-	            // set the fields:
-		       preparedStatement.setInt(1, newObj.getRequest_id());
-		        preparedStatement.setInt(2, newObj.getSubmitter_id());
-		        preparedStatement.setInt(3, newObj.getEvent_type_id());
-		        preparedStatement.setInt(4, newObj.getStatus_id());
-		        preparedStatement.setTimestamp(5, new Timestamp (newObj.getEvent_date().getTime()));
-		        preparedStatement.setInt(6, newObj.getCost());
-		        preparedStatement.setString(7, newObj.getDescription());
-		        preparedStatement.setString(8, newObj.getLocation());
-		        preparedStatement.setTimestamp(9, new Timestamp (newObj.getSubmitted_at().getTime()));
-	        
-	       int count = preparedStatement.executeUpdate();
-	       
-	       ResultSet resultSet = preparedStatement.getGeneratedKeys();
-	       
-	       if (count>0) {
-	    	   System.out.println("Request Completed.");
-	    	   
-	    	   resultSet.next();
-	    	   
-	    	   int id = resultSet.getInt(1);
-	    	   newObj.setRequest_id(id);
-	    	   connection.commit(); //commit the changes to the database
-	       }
-	       else {
-	    	   System.out.println("Request Failed.");
-	    	   connection.rollback(); //rollback the changes
-	       }
-		 } catch (SQLException e) {
-			 //prints out what went wrong
-			 e.printStackTrace();
-			 try {
-				 connection.rollback();
-			 } catch (SQLException e1) {
-				 e1.printStackTrace();
-			 }
-		 } finally {
-			 try {
-				 connection.close();
-			 } catch (SQLException e) {
-				 e.printStackTrace();
-			 }
-		 }
-		 return newObj.getRequest_id();
-	}
-	
-	public void genericCreate(String name) {
-		final String SQL = "insert into generic_table Values(default, ? )";
-		 try(
-				 Connection connection = ConnectionFactory.getConnection();
-				 PreparedStatement statement = connection.prepareStatement(SQL)) 
-		 {
-			 statement.setString(1, name);
-
-			 statement.execute();
-			 
-		 } catch (SQLException e) {
-			 //prints out what went wrong
-			 e.printStackTrace();
-		
-	}
 	}
 }
 	

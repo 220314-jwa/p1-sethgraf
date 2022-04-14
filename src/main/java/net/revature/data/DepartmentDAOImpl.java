@@ -7,19 +7,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import net.revature.models.Department;
-import net.revature.models.Employee;
 import net.revature.services.ConnectionFactory;
 
 public class DepartmentDAOImpl implements DepartmentDAO{
-	private static ConnectionFactory connectionFactory = ConnectionFactory.getConnectionFactory();
+	//private static ConnectionFactory connectionFactory = ConnectionFactory.getConnectionFactory();
 
 	@Override
 	public List<Department> getAll() {
 		// TODO Auto-generated method stub
 		List<Department> departments = new ArrayList<Department>();
-		String sql = "SELECT * FROM department";
+		String sql = "SELECT * FROM department"; 
 		
-		try (Connection connection = connectionFactory.getConnection()){
+		try (Connection connection = ConnectionFactory.getConnection()){
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 			
 			ResultSet resultSet = preparedStatement.executeQuery();
@@ -46,7 +45,7 @@ public class DepartmentDAOImpl implements DepartmentDAO{
 	public void update(Department updatedObj) {
 		// TODO Auto-generated method stub
 	
-	Connection connection = connectionFactory.getConnection();
+	Connection connection = ConnectionFactory.getConnection();
 	String sql = "update department dept_id = ?, dept_name = ?, dept_head_id = ?";
 	
 	try {
@@ -56,7 +55,7 @@ public class DepartmentDAOImpl implements DepartmentDAO{
 		preparedStatement.setString(2, updatedObj.getDept_name());
 		preparedStatement.setInt(3, updatedObj.getDept_head_id());
 		
-		int status_id = (updatedObj.getDept_name().equals("Available")) ? 1 : 2;
+		// int status_id = (updatedObj.getDept_name().equals("Available")) ? 1 : 2;
 		connection.setAutoCommit(false);
 		
 		int count = preparedStatement.executeUpdate();
@@ -83,7 +82,7 @@ public class DepartmentDAOImpl implements DepartmentDAO{
 	@Override
 	public void delete(Department objToDelete) {
 		// TODO Auto-generated method stub
-		Connection connection = connectionFactory.getConnection();
+		Connection connection = ConnectionFactory.getConnection();
 		
 		String sql = "delete from department where id = ?";
 		try {
@@ -113,14 +112,14 @@ public class DepartmentDAOImpl implements DepartmentDAO{
 	}
 
 	@Override
-	public Department getById(int id) {
+	public Department getById(int dept_id) {
 		// TODO Auto-generated method stub
 	Department department = null;
 	String sql = "SELECT * FROM department WHERE id = ?";
 	
-	try(Connection connection = connectionFactory.getConnection()){
+	try(Connection connection = ConnectionFactory.getConnection()){
 		PreparedStatement preparedStatement = connection.prepareStatement(sql);
-		preparedStatement.setInt(1, id);
+		preparedStatement.setInt(1, dept_id);
 		ResultSet resultSet = preparedStatement.executeQuery();
 		
 		if (resultSet.next()) {
@@ -138,31 +137,31 @@ public class DepartmentDAOImpl implements DepartmentDAO{
 	@Override
 	public int create(Department newObj) {
 		// TODO Auto-generated method stub
-		Connection connection = connectionFactory.getConnection();
+		Connection connection = ConnectionFactory.getConnection();
 		
-		String sql = "insert into department(dept_id, dept_name, dept_head_id)";
+		String sql = "insert into department(dept_id, dept_name, dept_head_id) values(default,?,?);";
 		
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			
-			preparedStatement.setInt(1, newObj.getDept_id());
-			preparedStatement.setString(2, newObj.getDept_name());
-			preparedStatement.setInt(3, newObj.getDept_head_id());
+			preparedStatement.setString(1, newObj.getDept_name());
+			preparedStatement.setInt(2, newObj.getDept_head_id());
+			//preparedStatement.setInt(3, newObj.getDept_head_id());
 			
-			int dept_id;
-			if (newObj.getDept_name().equals("Available")) {
-				dept_id = 1;
-			}
-			else {
-				dept_id = 2;
-			}
-			preparedStatement.setInt(1, dept_id);
-			connection.setAutoCommit(false);
+			//if (newObj.getDept_name().equals("Available")) {
+			//	dept_id = 1;
+			
+		//	else {
+		//		dept_id = 2;
+		//	}
+			//preparedStatement.setInt(1, dept_id);
+			//connection.setAutoCommit(false);
 			int count = preparedStatement.executeUpdate();
 			ResultSet resultSet = preparedStatement.getGeneratedKeys();
 			
 			if (count >0) {
 			System.out.println("Department added.");
+			System.out.println(resultSet.next());
 			}
 			else {System.out.println("Something went wrong when adding.");
 			connection.rollback();

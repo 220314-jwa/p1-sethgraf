@@ -1,8 +1,9 @@
 package net.revature.models;
 import java.util.Date;
+import java.util.Objects;
 
 public class Request {
-	
+	//need to generate hashcode/equals as well as toString() all done within source after highlighting class
 	private int request_id;
 	private int employee_id;
 	private int submitter_id;
@@ -13,6 +14,7 @@ public class Request {
 	private String location;
 	private Date submitted_at;
 	private Date event_date;
+	private String grade;
 	
 	
 	public Request() {
@@ -88,4 +90,40 @@ public class Request {
 	public void setEvent_date(Date event_date) {
 		this.event_date = event_date;
 	}
-}
+	public String getGrade() {
+		return grade;
+	}
+	public void setGrade(String grade) {
+		this.grade = grade;
+	}
+	@Override
+	public String toString() {
+		return "Request [request_id=" + request_id + ", employee_id=" + employee_id + ", submitter_id=" + submitter_id
+				+ ", event_type_id=" + event_type_id + ", status_id=" + status_id + ", cost=" + cost + ", description="
+				+ description + ", location=" + location + ", submitted_at=" + submitted_at + ", event_date="
+				+ event_date + ", grade=" + grade + "]";
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(cost, description, employee_id, event_date, event_type_id, grade, location, request_id,
+				status_id, submitted_at, submitter_id);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Request other = (Request) obj;
+		return cost == other.cost && Objects.equals(description, other.description) && employee_id == other.employee_id
+				&& Objects.equals(event_date, other.event_date) && event_type_id == other.event_type_id
+				&& Objects.equals(grade, other.grade) && Objects.equals(location, other.location)
+				&& request_id == other.request_id && status_id == other.status_id
+				&& Objects.equals(submitted_at, other.submitted_at) && submitter_id == other.submitter_id;
+	}
+	
+	}
+	
+

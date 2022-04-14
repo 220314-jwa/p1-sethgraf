@@ -12,8 +12,8 @@ import java.util.Properties;
 public class ConnectionFactory {
     // private - only this class can directly access
     // static - it belongs to the class, rather than a specific instance (singleton design pattern)
-    private static ConnectionFactory connectionFactory = null;
-	private static Properties properties;
+    private static Connection connection = null;
+/*private static Properties properties;
 
 	private ConnectionFactory() {
 		InputStream stream = ConnectionFactory.class.getClassLoader().getResourceAsStream("database.properties");
@@ -36,8 +36,9 @@ public class ConnectionFactory {
 //    	String url = properties.getProperty("url");
 //        String username = properties.getProperty("username");
 //        String password = properties.getProperty("password");
-
-    	String url = "jdbc:postgresql://database-1.cbv7gfdov7ji.us-east-1.rds.amazonaws.com:5432/Project1Database";
+*/public static Connection getConnection() {
+	if(connection == null) {
+    	String url = "jdbc:postgresql://database-1.cbv7gfdov7ji.us-east-1.rds.amazonaws.com:5432/postgres";
     	String username = "postgres";
     	String password = "Kgsg7072!";
         // try connecting to the database:
@@ -50,7 +51,7 @@ public class ConnectionFactory {
             // if something goes wrong, view the stack trace
             e.printStackTrace();
         }
-        return connection;
     }
+	return connection;
 }
-
+}

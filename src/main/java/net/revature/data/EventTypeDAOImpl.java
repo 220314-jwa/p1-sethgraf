@@ -11,7 +11,7 @@ import net.revature.models.EventType;
 import net.revature.services.ConnectionFactory;
 
 public class EventTypeDAOImpl implements EventTypeDAO {
-	private static ConnectionFactory connectionFactory = ConnectionFactory.getConnectionFactory();
+	//private static ConnectionFactory connectionFactory = ConnectionFactory.getConnectionFactory();
 
 	@Override
 	public List<EventType> getAll() {
@@ -19,7 +19,7 @@ public class EventTypeDAOImpl implements EventTypeDAO {
 		 List<EventType> eventtypes = new ArrayList<EventType>();
 
 	        String sql = "SELECT * FROM eventtype";
-	        try (Connection connection = connectionFactory.getConnection()){
+	        try (Connection connection = ConnectionFactory.getConnection()){
 	            PreparedStatement preparedStatement = connection.prepareStatement(sql);
 	            // get the result from our query:
 	            ResultSet resultSet = preparedStatement.executeQuery();
@@ -60,7 +60,7 @@ public class EventTypeDAOImpl implements EventTypeDAO {
 	@Override
 	public void update(EventType updatedObj) {
 		// TODO Auto-generated method stub
-		Connection connection = connectionFactory.getConnection();
+		Connection connection = ConnectionFactory.getConnection();
     	// we create the template for the SQL string:
     	String sql = "update eventtype set event_type_id = ?, event_type_name = ?";
     	try {
@@ -99,7 +99,7 @@ public class EventTypeDAOImpl implements EventTypeDAO {
 	@Override
 	public void delete(EventType objToDelete) {
 		// TODO Auto-generated method stub
-	Connection connection = connectionFactory.getConnection();
+	Connection connection = ConnectionFactory.getConnection();
     	
     	String sql = "delete from eventtype where id = ?;";
     	try {
@@ -131,7 +131,7 @@ public class EventTypeDAOImpl implements EventTypeDAO {
 	@Override
 	public int create(EventType newObj) {
 		// TODO Auto-generated method stub
-		Connection connection = connectionFactory.getConnection();
+		Connection connection = ConnectionFactory.getConnection();
 		
 		String sql = "insert into event_type_id, event_type_name(default, ?, ?)";
 		
@@ -196,7 +196,7 @@ public class EventTypeDAOImpl implements EventTypeDAO {
 	        // but we specify an id so we only get one single pet:
 	        String sql = "SELECT * FROM event_type WHERE id = ?";
 
-	        try (Connection connection = connectionFactory.getConnection()) {
+	        try (Connection connection = ConnectionFactory.getConnection()) {
 	            PreparedStatement preparedStatement = connection.prepareStatement(sql);
 	            preparedStatement.setInt(1, id);
 	            ResultSet resultSet = preparedStatement.executeQuery();

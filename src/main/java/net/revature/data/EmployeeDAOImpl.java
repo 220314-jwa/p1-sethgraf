@@ -10,8 +10,9 @@ import java.util.LinkedList;
 import net.revature.models.Employee;
 import net.revature.services.ConnectionFactory;
 
-public class EmployeeDAOImpl implements EmployeeDAO{
-	private static ConnectionFactory connectionFactory = ConnectionFactory.getConnectionFactory();
+public class EmployeeDAOImpl implements EmployeeDAO {
+	// private static ConnectionFactory connectionFactory =
+	// ConnectionFactory.getConnectionFactory();
 
 	@Override
 	public List<Employee> getAll() {
@@ -20,8 +21,8 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 		Connection connection = ConnectionFactory.getConnection();
 		try {
 			String sql = "select * employee from employee left join ______ on employee.id=_________";
-					//what to fill in the blanks
-		Statement statement = connection.createStatement();
+			// what to fill in the blanks
+			Statement statement = connection.createStatement();
 			ResultSet resultSet = statement.executeQuery(sql);
 			while (resultSet.next()) {
 				Employee employee = new Employee();
@@ -32,9 +33,9 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 				employee.setDept_id(resultSet.getInt("dept_id"));
 				employee.setUsername(resultSet.getString("username"));
 				employee.setPassword(resultSet.getString("password"));
-				
+
 			}
-		} catch (SQLException e){
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return employees;
@@ -43,7 +44,7 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 	@Override
 	public void update(Employee updatedObj) {
 		// TODO Auto-generated method stub
-		Connection connection = connectionFactory.getConnection();
+		Connection connection = ConnectionFactory.getConnection();
 		try {
 			String sql = "update employee set employee_id=?, first_name=?, last_name=?, manager_id=?, "
 					+ "dept_id=?, username=?, passowrd=?";
@@ -55,15 +56,15 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 			preparedStatement.setInt(5, updatedObj.getDept_id());
 			preparedStatement.setString(6, updatedObj.getUsername());
 			preparedStatement.setString(7, updatedObj.getPassword());
-		
+
 			connection.setAutoCommit(false);
 			int rowsUpdated = preparedStatement.executeUpdate();
-		
-		if  (rowsUpdated<=1) {
-			connection.commit();
-		} else {
-			connection.rollback();
-		}
+
+			if (rowsUpdated <= 1) {
+				connection.commit();
+			} else {
+				connection.rollback();
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			try {
@@ -85,45 +86,39 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 		// TODO Auto-generated method stub
 		Connection connection = ConnectionFactory.getConnection();
 		String sql = "delete from request where id = ?";
-				try {
-					PreparedStatement preparedStatement = connection.prepareStatement(sql);
-					preparedStatement.setInt(1, objToDelete.getEmployee_id());
-					int count = preparedStatement.executeUpdate();
-					if (count !=1) {
-						System.out.println("Something went wrong with deletion!");
-						}
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setInt(1, objToDelete.getEmployee_id());
+			int count = preparedStatement.executeUpdate();
+			if (count != 1) {
+				System.out.println("Something went wrong with deletion!");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
+
 // ask if i need to add in 
-	/*    @Override
-    public void delete(Pet objToDelete) {
-
-    }
-
-    @Override
-    public List<Request> getByStatus(String status) {
-        return null;
-    }
-
-    @Override
-    public List<Request> getById (Employee Id) {
-        return null;
-    }
-}
-*/
+	/*
+	 * @Override public void delete(Pet objToDelete) {
+	 * 
+	 * }
+	 * 
+	 * @Override public List<Request> getByStatus(String status) { return null; }
+	 * 
+	 * @Override public List<Request> getById (Employee Id) { return null; } }
+	 */
 	@Override
 	public Employee getById(int id) {
 		// TODO Auto-generated method stub
 		Employee employee = null;
-		Connection connection = connectionFactory.getConnection();
+		Connection connection = ConnectionFactory.getConnection();
 		try {
-			String sql = "select * from person join employee";
-					//come back and ask question refer to line 61-62 UserPostgres.java
+			String sql = "select * from employee join employee";
+			// come back and ask question refer to line 61-62 UserPostgres.java
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setInt(1, id);
-			
+
 			ResultSet resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
 				employee = new Employee();
@@ -134,12 +129,12 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 				employee.setDept_id(resultSet.getInt("dept_id"));
 				employee.setUsername(resultSet.getString("username"));
 				employee.setPassword(resultSet.getString("password"));
-				
-				//RequestDAO requestDao = DAOFactory.getRequestDAO();
-				//employee.setRequest_id(requestDao.getById(employee));
-				//double check this with sierra to determine what to fill in	
+
+				// RequestDAO requestDao = DAOFactory.getRequestDAO();
+				// employee.setRequest_id(requestDao.getById(employee));
+				// double check this with sierra to determine what to fill in
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -149,11 +144,12 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 	@Override
 	public int create(Employee newObj) {
 		// TODO Auto-generated method stub
-		Connection connection = connectionFactory.getConnection();
+		Connection connection = ConnectionFactory.getConnection();
 		try {
-			String sql = "insert into person (employee_id, first_name, last_name, manager_id, dept_id, username, password)" 
-		+ "values(?,?,?,?,?)";
-			PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+			String sql = "insert into employee (employee_id, first_name, last_name, manager_id, dept_id, username, password)"
+					+ "values(?,?,?,?,?)";
+			PreparedStatement preparedStatement = connection.prepareStatement(sql,
+					PreparedStatement.RETURN_GENERATED_KEYS);
 			preparedStatement.setInt(1, newObj.getEmployee_id());
 			preparedStatement.setString(2, newObj.getFirst_name());
 			preparedStatement.setString(3, newObj.getLast_name());
@@ -161,16 +157,16 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 			preparedStatement.setInt(5, newObj.getDept_id());
 			preparedStatement.setString(6, newObj.getUsername());
 			preparedStatement.setString(7, newObj.getPassword());
-			
-			connection.setAutoCommit(false ); 
+
+			connection.setAutoCommit(false);
 			preparedStatement.executeUpdate();
 			ResultSet resultSet = preparedStatement.getGeneratedKeys();
-		if (resultSet.next()) {
-			newObj.setEmployee_id(resultSet.getInt(1));
-			connection.commit();
-		} else {
-			connection.rollback();
-		}
+			if (resultSet.next()) {
+				newObj.setEmployee_id(resultSet.getInt(1));
+				connection.commit();
+			} else {
+				connection.rollback();
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			try {
@@ -190,12 +186,22 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 
 	@Override
 	public Employee getByUsername(String username) {
-		// TODO Auto-generated method stub
-		
-		return null;
+		Employee employee = null;
+		try (Connection connection = ConnectionFactory.getConnection()) {
+			String sql = "Select * from employee where username = ?";
+			PreparedStatement preparedStatement = connection.prepareStatement(sql,
+					PreparedStatement.RETURN_GENERATED_KEYS);
+			preparedStatement.setString(3, username);
+
+			ResultSet resultSet = preparedStatement.executeQuery();
+			if (resultSet.next()) {
+				// employee = EmployeeDAOImpl.parseResultSet(resultSet);
+			} else {
+				System.out.println("something went wrong getting username");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return employee;
 	}
-
 }
-	
-	
-

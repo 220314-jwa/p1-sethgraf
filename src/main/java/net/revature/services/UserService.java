@@ -1,17 +1,19 @@
 package net.revature.services;
 
-import java.util.List;
-import net.revature.exceptions.IncorrectCredentialsException;
-import net.revature.exceptions.UnavailableException;
 import net.revature.exceptions.UsernameAlreadyExistsException;
+
+import java.util.List;
+
+import net.revature.exceptions.IncorrectCredentialsException;
+import net.revature.exceptions.RequestAlreadySubmittedException;
 import net.revature.models.Employee;
 import net.revature.models.Request;
+import net.revature.models.Status;
+
 
 
 public interface UserService {	
-public Employee logIn(String username, String password) throws IncorrectCredentialsException;
-
-
+	public Employee logIn(String username, String password) throws IncorrectCredentialsException;
 	/**
 	 * creates a new user. if the username is available, 
 	 * returns the new user with their database-generated ID. 
@@ -20,38 +22,20 @@ public Employee logIn(String username, String password) throws IncorrectCredenti
 	 * @param newUser
 	 * @return User with newly generated ID
 	 */
-	public Employee register(Employee newEmployee) throws UsernameAlreadyExistsException;
-	
+	public Request submitRequest(Request requestToSubmit) throws RequestAlreadySubmittedException;
 	/**
 	 * 
 	 * @return all available pets
 	 */
-	public List<Request> viewAvailableRequests();
-	
+	public List<Request> viewRequests();
 	/**
-	 * 
-	 * @param species
-	 * @return all available pets with the specified species
+	 * @param request_id
+	 * @return request with the request_id
 	 */
-	public List<Request> searchRequestsByDesciption(String description);
+	public Status updateRequestStatus(Status statusToUpdate);
+	// add statuses from ERD Pending Manager Approval, Approved, Rejected
 	
-	/**
-	 * sets the pet to be adopted by the user. if the pet
-	 * is not available, throws AlreadyAdoptedException.
-	 * 
-	 * @param user
-	 * @param petToAdopt
-	 * @return user with their newly adopted pet
-	 */
-	public Employee Request(Employee employee, Request requestStatusId) throws UnavailableException;
+	public Employee register(Employee newEmployee) throws UsernameAlreadyExistsException;
 	
-	/**
-	 * 
-	 * @param id
-	 * @return the pet with the specified ID
-	 */
-	public Request getRequestById(int id);
-	
-	//add statuses from ERD Pending Manager Approval, Manager-Approved, Pending Dept Head Approval, Approved, Rejected
 }
 

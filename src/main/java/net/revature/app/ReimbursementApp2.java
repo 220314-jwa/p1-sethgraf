@@ -2,41 +2,66 @@ package net.revature.app;
 
 import io.javalin.Javalin;
 import net.revature.data.DAOFactory;
+import net.revature.data.DepartmentDAO;
+import net.revature.data.EmployeeDAO;
+import net.revature.data.RequestDAO;
+import net.revature.models.Department;
+import net.revature.models.Employee;
+import net.revature.models.Request;
+/*import net.revature.data.DAOFactory;
 import net.revature.data.EmployeeDAO;
 import net.revature.models.Employee;
-
+*/
 public class ReimbursementApp2 {
 public static void main(String[] args) {
 Javalin app = Javalin.create();
-app.start(8088);
-app.post("/request", ctx -> {
-	//getting the user id with employee id
-	Employee employee = ctx.bodyAsClass(net.revature.models.Employee.class);
-	EmployeeDAO employeeDAO = DAOFactory.getEmployeeDAO();
-	
-	int employee_id = employeeDAO.create(employee);
-	
-	ctx.result("the user id is " + employee_id);
-});
-//Getting all the users:both authors and editors
-app.get("/employee", ctx->{
-	int id = Integer.parseInt(ctx.pathParam("id"));
-	EmployeeDAO employeeDAO = DAOFactory.getEmployeeDAO();
-	int resultEmployee= employeeDAO.getById(id);
-	ctx.json(resultEmployee);
-	
+app.start(5432);
+
+app.post("/department", ctx ->{
+	Department department = ctx.bodyAsClass(net.revature.models.Department.class);
+	System.out.println(department);
+	DepartmentDAO departmentDAO = DAOFactory.getDepartmentDAO();
+	departmentDAO.create(department);
+	System.out.println(department);
 });
 
-//update users
-app.put("/employee", ctx->{
-	Employee employee = ctx.bodyAsClass(net.revature.models.Employee.class);
-	EmployeeDAO employeeDAO= DAOFactory.getEmployeeDAO();
-	employeeDAO.update(employee);
-	
-	
+//app.get("/form", )
+app.post("/request", ctx ->{
+    Request request = ctx.bodyAsClass(Request.class);
+    RequestDAO requestDAO = DAOFactory.getRequestDAO();
+    requestDAO.create(request);
+    System.out.println(request);
+    ctx.result("the request is working");
+});
+
+app.get("/employee", ctx ->{
+Employee employee = new Employee();
+ctx.json(employee);
+});
+app.post("/department", ctx ->{
+Department department = ctx.bodyAsClass(net.revature.models.Department.class);
+System.out.println(department);
+DepartmentDAO departmentDAO = DAOFactory.getDepartmentDAO();
+departmentDAO.create(department);
+System.out.println(department);
+});
+
+app.get("/department/{id}", ctx ->{
+int dept_id = Integer.parseInt(ctx.pathParam("id"));
+DepartmentDAO departmentDAO = DAOFactory.getDepartmentDAO();
+Department department = departmentDAO.getById(dept_id);
+ctx.json(department);
+});
+
+app.post("/employee", ctx ->{
+    Employee employee = ctx.bodyAsClass(net.revature.models.Employee.class);
+    EmployeeDAO employeeDAO = DAOFactory.getEmployeeDAO();
+    int employee_id = employeeDAO.create(employee);
+    ctx.result("the employee id is:" + employee_id);
 });
 }
 }
+
 
 		
 		
