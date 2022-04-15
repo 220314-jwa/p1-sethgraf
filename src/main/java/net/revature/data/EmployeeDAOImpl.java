@@ -20,7 +20,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		List<Employee> employees = new LinkedList<>();
 		Connection connection = ConnectionFactory.getConnection();
 		try {
-			String sql = "select * employee from employee left join ______ on employee.id=_________";
+			String sql = "select * employee from employee left join ______ on employee.id=_________;";
 			// what to fill in the blanks
 			Statement statement = connection.createStatement();
 			ResultSet resultSet = statement.executeQuery(sql);
@@ -47,7 +47,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		Connection connection = ConnectionFactory.getConnection();
 		try {
 			String sql = "update employee set employee_id=?, first_name=?, last_name=?, manager_id=?, "
-					+ "dept_id=?, username=?, passowrd=?";
+					+ "dept_id=?, username=?, passowrd=?;";
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setInt(1, updatedObj.getEmployee_id());
 			preparedStatement.setString(2, updatedObj.getFirst_name());
@@ -85,7 +85,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	public void delete(Employee objToDelete) {
 		// TODO Auto-generated method stub
 		Connection connection = ConnectionFactory.getConnection();
-		String sql = "delete from request where id = ?";
+		String sql = "delete from request where id = ?;";
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setInt(1, objToDelete.getEmployee_id());
@@ -108,8 +108,28 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	 * 
 	 * @Override public List<Request> getById (Employee Id) { return null; } }
 	 */
+	private static Employee parseResultSet(ResultSet resultSet) {
+
+		Employee employee = new Employee();
+
+		try {
+			employee.setEmployee_id(resultSet.getInt(1));
+			employee.setFirst_name(resultSet.getString(2));
+			employee.setLast_name(resultSet.getString(3));
+			employee.setManager_id(resultSet.getInt(4));
+			employee.setDept_id(resultSet.getInt(5));
+			employee.setUsername(resultSet.getString(6));
+			employee.setPassword(resultSet.getString(7));
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return employee;
+	}
+
 	@Override
-	public Employee getById(int id) {
+ 	public Employee getById(int id) {
 		// TODO Auto-generated method stub
 		Employee employee = null;
 		Connection connection = ConnectionFactory.getConnection();
@@ -147,7 +167,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		Connection connection = ConnectionFactory.getConnection();
 		try {
 			String sql = "insert into employee (employee_id, first_name, last_name, manager_id, dept_id, username, password)"
-					+ "values(?,?,?,?,?)";
+					+ "values(?,?,?,?,?,?,?);";
 			PreparedStatement preparedStatement = connection.prepareStatement(sql,
 					PreparedStatement.RETURN_GENERATED_KEYS);
 			preparedStatement.setInt(1, newObj.getEmployee_id());
@@ -188,14 +208,14 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	public Employee getByUsername(String username) {
 		Employee employee = null;
 		try (Connection connection = ConnectionFactory.getConnection()) {
-			String sql = "Select * from employee where username = ?";
+			String sql = "Select * from employee where username = ?;";
 			PreparedStatement preparedStatement = connection.prepareStatement(sql,
 					PreparedStatement.RETURN_GENERATED_KEYS);
-			preparedStatement.setString(3, username);
+			preparedStatement.setString(1, username);
 
 			ResultSet resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
-				// employee = EmployeeDAOImpl.parseResultSet(resultSet);
+				 employee = EmployeeDAOImpl.parseResultSet(resultSet);
 			} else {
 				System.out.println("something went wrong getting username");
 			}
@@ -205,3 +225,4 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		return employee;
 	}
 }
+
