@@ -1,5 +1,6 @@
 package net.revature.app;
 
+import java.util.List;
 import java.util.Map;
 import io.javalin.Javalin;
 import io.javalin.http.HttpCode;
@@ -12,12 +13,9 @@ import net.revature.models.Employee;
 import net.revature.models.Request;
 import net.revature.services.UserService;
 import net.revature.services.UserServiceImpl;
-/*import net.revature.data.DAOFactory;
-import net.revature.data.EmployeeDAO;
-import net.revature.models.Employee;
-*/
+
 public class ReimbursementApp2 {
-	private static UserService userService = new UserServiceImpl();
+private static UserService userService = new UserServiceImpl();
 public static void main(String[] args) {
 Javalin app = Javalin.create((config) ->{
 config.enableCorsForAllOrigins();});
@@ -58,6 +56,7 @@ app.post("/employee", ctx ->{
     int employee_id = employeeDAO.create(employee);
     ctx.result("the employee id is:" + employee_id);
 });
+//WORKS!!!!!:-)
 app.post("/login", ctx -> {
 	Map<String, String> credentials = ctx.bodyAsClass(Map.class);
 	String username = credentials.get("username");
@@ -73,11 +72,12 @@ app.post("/login", ctx -> {
 		ctx.status(HttpCode.UNAUTHORIZED);
 	}
 });
-
-
+app.get("/requests", ctx ->{
+	List<Request> requests = userService.viewRequests();
+	ctx.json(requests);
+});
 }
 }
-
 		
 		
 		

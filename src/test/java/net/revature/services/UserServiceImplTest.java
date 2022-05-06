@@ -16,12 +16,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import net.revature.exceptions.UsernameAlreadyExistsException;
-import net.revature.data.DAOFactory;
 import net.revature.data.EmployeeDAO;
 import net.revature.data.RequestDAO;
 import net.revature.data.StatusDAO;
 import net.revature.exceptions.IncorrectCredentialsException;
-import net.revature.exceptions.RequestAlreadySubmittedException;
 import net.revature.models.Employee;
 import net.revature.models.Request;
   

@@ -1,11 +1,8 @@
 package net.revature.services;
-
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Properties;
+
 
 // a factory is responsible for generating an object and returning it
 // singleton is a design pattern where we only create one instance of a class, saves memory so we're not re-instantiating it every time
