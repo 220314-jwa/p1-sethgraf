@@ -1,23 +1,27 @@
 # Java with Automation Foundations Project
+# Tuition Reimbursement App
 
-For this project, you will be creating a full-stack application. There will be two different primary deadlines:
-
-- **April 6th** Back end unit tests complete, at least 3 endpoints functional
-- **April 15th** Final deadline including front end
-
-The biggest priority for this application is testing! If you have everything working but you have not completed the testing requirements (JUnit, Mockito, Selenium), you **DO NOT** have a sufficient project. When considering how you want to manage your time, make sure that you will have your tests completed either early or as you go.
+For this project, I created a full-stack application.
+The biggest priority for this application is testing using (JUnit, Mockito, Selenium).
 
 ## About the Application
 
-You will be creating one of these two applications:
-
-### TRMS: Tuition Reimbursement Management System
+### MS: Tuition Reimbursement Management System
 
 Tuition Reimbursement Management System is an application which allows employees at a company to submit requests for reimbursement. If the employee decides to take a certification exam or attend a class, the company may reimburse them for the cost after they submit a request. Managers can then go into the application and approve or reject requests.
 
-### SPMS: Story Pitch Management System
+## Technologies Used:
 
-Story Pitch Management System is an application which allows authors to submit pitches for stories to the publishing company. They can write a small description of the story they hope to write, and editors can go into the application and approve or reject story pitches based on whether they sound interesting or even suggest changes before approval.
+1.  Java    
+2.  Maven    
+3.  Postgres   
+4.  DBeaver
+5.  Junit
+6.  Mockito
+7.  Selenium
+8.  Cucumber/Gherkin
+9.  HTML5 / CSS 3
+10. Javascript / AJAX
 
 ## Technical Requirements
 
@@ -29,15 +33,17 @@ Story Pitch Management System is an application which allows authors to submit p
 6. Front end must be written using HTML, CSS, and JavaScript (no libraries/frameworks for JS. Styling libraries like Bootstrap are fine).
 7. At least one feature must have an automation test written using Selenium.
 
-## Functional Requirements
+## Features
+1. End2End testing using Junit and Mockito
+2. Abilty to add user to tuition reimbursement 
+3. Signin function
 
-[TRMS Specifications](./p1-specs/TRMS.md)
+Todo List
+1. Fix bugs
+2. Correct E2E 
+3. Correct failed unit testing
+4. Add Cucumber Scenarios
 
-[SPMS Specifications](./p1-specs/SPMS.md)
-
-## Bonus Requirements
-
-1. Use JWTs for session management.
-2. Use at least one Cucumber feature file.
-3. Use the POM design pattern for your Selenium test(s).
-4. Implement file attachments for requests/pitches.
+## Getting Started
+Clone address
+https://github.com/220314-jwa/p1-sethgraf
